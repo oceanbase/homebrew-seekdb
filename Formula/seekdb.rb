@@ -25,7 +25,7 @@ class Seekdb < Formula
     (libexec/"seekdb").install Dir["usr/libexec/seekdb/*"]
 
     # Install share files from usr/share/seekdb/
-    (share/"seekdb").install Dir["usr/share/seekdb/*"]
+    pkgshare.install Dir["usr/share/seekdb/*"]
 
     # Create data directories
     (var/"seekdb").mkpath
@@ -259,6 +259,6 @@ class Seekdb < Formula
   end
 
   test do
-    system "#{bin}/seekdb", "--version"
+    system bin/"seekdb", "--version"
   end
 end
