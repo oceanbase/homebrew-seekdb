@@ -3,7 +3,7 @@ class Seekdb < Formula
   homepage "https://github.com/oceanbase/seekdb"
   url "https://mirrors.aliyun.com/oceanbase/community/stable/darwin/15/arm64/seekdb-1.2.0.0-beta-macos15-arm64.tar.gz"
   version "1.2.0.0"
-  sha256 "2077c0830947f2e114daa7ffb098427d04ef8f4936cae6e3583a28301f64392f"
+  sha256 "3b3097df226dc512542f22ff02f1f81718b5f073752083e4fbc56c9e322ac956"
   license "Apache-2.0"
   depends_on arch: :arm64
   depends_on "brotli"
