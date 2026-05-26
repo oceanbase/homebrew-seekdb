@@ -1,6 +1,6 @@
-# SeekDB Homebrew Package
+# seekdb Homebrew Package
 
-This directory contains the Homebrew installation configuration for OceanBase SeekDB.
+This directory contains the Homebrew installation configuration for OceanBase seekdb.
 
 ## Directory Structure
 
@@ -19,7 +19,7 @@ homebrew-seekdb/
 # Add tap (if not already added)
 brew tap oceanbase/seekdb
 
-# Install SeekDB
+# Install seekdb
 brew install seekdb
 ```
 
@@ -30,7 +30,7 @@ After installation, SeekDB will automatically create the following directory str
 
 ## Usage
 
-### Starting SeekDB
+### Starting seekdb
 
 #### Method 1: Using Management Commands (Recommended)
 
@@ -38,7 +38,7 @@ After installation, SeekDB will automatically create the following directory str
 seekdb-start
 ```
 
-This will start SeekDB as a background daemon and automatically:
+This will start seekdb as a background daemon and automatically:
 - Check if it's already running
 - Create necessary directories
 - Write PID file
@@ -58,7 +58,7 @@ You can also specify a custom data directory:
 seekdb --base-dir=/custom/path
 ```
 
-### Stopping SeekDB
+### Stopping seekdb
 
 #### Method 1: Using Management Commands (Recommended)
 
@@ -138,11 +138,11 @@ SeekDB depends on the following Homebrew packages:
 - `re2` - Regular expression library
 - `brotli` - Compression algorithm
 
-These dependencies will be automatically installed when installing SeekDB.
+These dependencies will be automatically installed when installing seekdb.
 
 ## Troubleshooting
 
-### SeekDB Fails to Start
+### seekdb Fails to Start
 
 1. **Check if port is in use**:
 ```bash
@@ -183,11 +183,11 @@ chmod -R 755 /opt/homebrew/var/seekdb
 
 If macOS blocks the application from running:
 1. Open "System Preferences" > "Security & Privacy"
-2. Click "Open Anyway" or "Allow" to permit SeekDB to run
+2. Click "Open Anyway" or "Allow" to permit seekdb to run
 
 ### Insufficient Memory
 
-SeekDB requires a minimum of 2GB of memory. Check system memory:
+seekdb requires a minimum of 2GB of memory. Check system memory:
 ```bash
 sysctl hw.memsize
 ```
@@ -205,7 +205,7 @@ seekdb --nodaemon
 # Stop service
 seekdb-stop
 
-# Uninstall SeekDB
+# Uninstall seekdb
 brew uninstall seekdb
 
 # Remove data directory (optional, will delete all data)
@@ -214,11 +214,11 @@ rm -rf /opt/homebrew/var/seekdb
 
 ## Version Information
 
-- Current version: 1.0.0
+- Current version: 1.3.0.0
 - Homepage: https://github.com/oceanbase/seekdb
 - License: Apache-2.0
 
 ## Related Links
 
-- [OceanBase SeekDB](https://github.com/oceanbase/seekdb)
+- [OceanBase seekdb](https://github.com/oceanbase/seekdb)
 - [Homebrew Formula Cookbook](https://docs.brew.sh/Formula-Cookbook)

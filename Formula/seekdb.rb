@@ -1,9 +1,9 @@
 class Seekdb < Formula
-  desc "AI-Native Search Database - OceanBase SeekDB"
+  desc "AI-Native Search Database - OceanBase seekdb"
   homepage "https://github.com/oceanbase/seekdb"
-  url "https://mirrors.aliyun.com/oceanbase/community/stable/darwin/15/arm64/seekdb-1.2.0.0-beta-macos15-arm64.tar.gz"
-  version "1.2.0.0"
-  sha256 "3b3097df226dc512542f22ff02f1f81718b5f073752083e4fbc56c9e322ac956"
+  url "https://mirrors.aliyun.com/oceanbase/community/stable/darwin/15/arm64/seekdb-1.3.0.0-100000092026051510-macos15-arm64.tar.gz"
+  version "1.3.0.0"
+  sha256 "65105646eface8e13e04ef83e61f6111b52d90ba473d03bd67f9c4ef06b81087"
   license "Apache-2.0"
   depends_on arch: :arm64
   depends_on "brotli"
@@ -66,7 +66,7 @@ class Seekdb < Formula
 
       # check if already running
       if [[ -f "$SEEKDB_PID_FILE" ]] && kill -0 "$(cat "$SEEKDB_PID_FILE")" 2>/dev/null; then
-        echo "SeekDB is already running (PID: $(cat "$SEEKDB_PID_FILE"))"
+        echo "seekdb is already running (PID: $(cat "$SEEKDB_PID_FILE"))"
         exit 1
       fi
 
@@ -75,24 +75,24 @@ class Seekdb < Formula
       mkdir -p "$(dirname "$SEEKDB_LOG_FILE")"
       mkdir -p "$SEEKDB_DATA_DIR"
 
-      echo "Starting SeekDB..."
+      echo "Starting seekdb..."
       echo "Data directory: $SEEKDB_DATA_DIR"
       echo "PID file: $SEEKDB_PID_FILE"
       echo "Log file: $SEEKDB_LOG_FILE"
 
-      # start SeekDB
+      # start seekdb
       "$SEEKDB_BIN" --base-dir="$SEEKDB_DATA_DIR" --parameter cpu_count=4 --parameter memory_limit=2G > "$SEEKDB_LOG_FILE" 2>&1 &
 
       # Loop to check startup status, wait up to 60 seconds
       MAX_WAIT=60
       WAITED=0
-      echo "Waiting for SeekDB to start..."
+      echo "Waiting for seekdb to start..."
 
       while [[ $WAITED -lt $MAX_WAIT ]]; do
         if [[ -f "$SEEKDB_PID_FILE" ]]; then
           SEEKDB_PID=$(cat "$SEEKDB_PID_FILE")
           if [[ -n "$SEEKDB_PID" ]] && kill -0 "$SEEKDB_PID" 2>/dev/null; then
-            echo "SeekDB started successfully (PID: $SEEKDB_PID) in ${WAITED}s"
+            echo "seekdb started successfully (PID: $SEEKDB_PID) in ${WAITED}s"
             echo -e "\\033[32mYou can connect via: mysql -h127.0.0.1 -uroot -P2881 -Doceanbase -A\\033[0m"
             sleep 2
 
@@ -114,7 +114,7 @@ class Seekdb < Formula
         WAITED=$((WAITED + 1))
       done
 
-      echo "Failed to start SeekDB within ${MAX_WAIT}s"
+      echo "Failed to start seekdb within ${MAX_WAIT}s"
       rm -f "$SEEKDB_PID_FILE"
       exit 1
     EOS
@@ -150,25 +150,25 @@ class Seekdb < Formula
       fi
 
       if [[ ! -f "$SEEKDB_PID_FILE" ]]; then
-        echo "SeekDB is not running (no PID file found)"
+        echo "seekdb is not running (no PID file found)"
         exit 0
       fi
 
       SEEKDB_PID=$(cat "$SEEKDB_PID_FILE")
 
       if ! kill -0 "$SEEKDB_PID" 2>/dev/null; then
-        echo "SeekDB is not running (stale PID file)"
+        echo "seekdb is not running (stale PID file)"
         rm -f "$SEEKDB_PID_FILE"
         exit 0
       fi
 
-      echo "Stopping SeekDB (PID: $SEEKDB_PID)..."
+      echo "Stopping seekdb (PID: $SEEKDB_PID)..."
 
       # force stop
-      echo "Force stopping SeekDB..."
+      echo "Force stopping seekdb..."
       kill -KILL "$SEEKDB_PID" 2>/dev/null
       rm -f "$SEEKDB_PID_FILE"
-      echo "SeekDB force stopped"
+      echo "seekdb force stopped"
     EOS
   end
 
@@ -179,14 +179,14 @@ class Seekdb < Formula
       SEEKDB_PID_FILE="#{var}/seekdb/data/run/seekdb.pid"
 
       if [[ ! -f "$SEEKDB_PID_FILE" ]]; then
-        echo "SeekDB is not running"
+        echo "seekdb is not running"
         exit 1
       fi
 
       SEEKDB_PID=$(cat "$SEEKDB_PID_FILE")
 
       if kill -0 "$SEEKDB_PID" 2>/dev/null; then
-        echo "SeekDB is running (PID: $SEEKDB_PID)"
+        echo "seekdb is running (PID: $SEEKDB_PID)"
 
         # show more information
         echo "Data directory: #{var}/seekdb/data"
@@ -196,7 +196,7 @@ class Seekdb < Formula
         # show process information
         ps -p "$SEEKDB_PID" -o pid,ppid,pcpu,pmem,etime,command
       else
-        echo "SeekDB is not running (stale PID file)"
+        echo "seekdb is not running (stale PID file)"
         rm -f "$SEEKDB_PID_FILE"
         exit 1
       fi
@@ -207,7 +207,7 @@ class Seekdb < Formula
     <<~EOS
       #!/bin/bash
 
-      echo "This will remove all SeekDB configuration and data files."
+      echo "This will remove all seekdb configuration and data files."
       echo "Directories to be removed:"
       echo "  - #{etc}/seekdb"
       echo "  - #{var}/seekdb"
@@ -216,7 +216,7 @@ class Seekdb < Formula
       echo ""
 
       if [[ $REPLY =~ ^[Yy]$ ]]; then
-        # Stop SeekDB if running
+        # Stop seekdb if running
         if command -v seekdb-stop &> /dev/null; then
           seekdb-stop 2>/dev/null || true
         fi
@@ -225,7 +225,7 @@ class Seekdb < Formula
         rm -rf "#{etc}/seekdb"
         rm -rf "#{var}/seekdb"
 
-        echo "SeekDB data and configuration have been removed."
+        echo "seekdb data and configuration have been removed."
         echo "You can now run: brew uninstall seekdb"
       else
         echo "Cleanup cancelled."
@@ -235,11 +235,11 @@ class Seekdb < Formula
 
   def caveats
     <<~EOS
-      SeekDB has been installed successfully!
+      seekdb has been installed successfully!
       Manual control commands(recommended):
-        seekdb-start   # Start SeekDB daemon
-        seekdb-stop    # Stop SeekDB daemon
-        seekdb-status  # Check SeekDB status
+        seekdb-start   # Start seekdb daemon
+        seekdb-stop    # Stop seekdb daemon
+        seekdb-status  # Check seekdb status
         seekdb-cleanup # Remove config and data directories
       Direct usage:
         seekdb --nodaemon                    # Foreground mode (first startup is faster)
@@ -252,7 +252,7 @@ class Seekdb < Formula
         Share:  #{share}/seekdb
       Complete uninstall:
         seekdb-cleanup                       # Remove config and data directories
-        brew uninstall seekdb                # Uninstall SeekDB
+        brew uninstall seekdb                # Uninstall seekdb
       Note: If macOS blocks the application, allow it in System Preferences >
       Security & Privacy. First background startup may take ~10 seconds.
     EOS

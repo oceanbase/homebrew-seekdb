@@ -1,6 +1,6 @@
-# SeekDB Homebrew 安装包
+# seekdb Homebrew 安装包
 
-本目录包含 OceanBase SeekDB 的 Homebrew 安装配置。
+本目录包含 OceanBase seekdb 的 Homebrew 安装配置。
 
 ## 目录结构
 
@@ -19,18 +19,18 @@ homebrew-seekdb/
 # 添加 tap（如果还没有添加）
 brew tap oceanbase/seekdb
 
-# 安装 SeekDB
+# 安装 seekdb
 brew install seekdb
 ```
 
-安装完成后，SeekDB 会自动创建以下目录结构：
+安装完成后，seekdb 会自动创建以下目录结构：
 - 数据目录: `/opt/homebrew/var/seekdb/data`
 - PID 文件: `/opt/homebrew/var/seekdb/run/seekdb.pid`
 - 日志文件: `/opt/homebrew/var/seekdb/data/log/seekdb.log`
 
 ## 使用方法
 
-### 启动 SeekDB
+### 启动 seekdb
 
 #### 方式 1: 使用管理命令（推荐）
 
@@ -38,7 +38,7 @@ brew install seekdb
 seekdb-start
 ```
 
-这会以后台守护进程方式启动 SeekDB，并自动：
+这会以后台守护进程方式启动 seekdb，并自动：
 - 检查是否已经运行
 - 创建必要的目录
 - 写入 PID 文件
@@ -57,7 +57,7 @@ seekdb --nodaemon
 seekdb --base-dir=/custom/path
 ```
 
-### 停止 SeekDB
+### 停止 seekdb
 
 #### 方式 1: 使用管理命令（推荐）
 
@@ -130,18 +130,18 @@ mycli -h 127.0.0.1 -P 2881 -u root
 
 ## 依赖项
 
-SeekDB 依赖以下 Homebrew 包：
+seekdb 依赖以下 Homebrew 包：
 - `zstd` - 压缩库
 - `utf8proc` - UTF-8 处理库
 - `thrift` - RPC 框架
 - `re2` - 正则表达式库
 - `brotli` - 压缩算法
 
-这些依赖会在安装 SeekDB 时自动安装。
+这些依赖会在安装 seekdb 时自动安装。
 
 ## 故障排除
 
-### SeekDB 启动失败
+### seekdb 启动失败
 
 1. **检查端口是否被占用**:
 ```bash
@@ -182,11 +182,11 @@ chmod -R 755 /opt/homebrew/var/seekdb
 
 如果 macOS 阻止应用运行：
 1. 打开"系统偏好设置" > "安全性与隐私"
-2. 点击"仍要打开"或"允许"来允许 SeekDB 运行
+2. 点击"仍要打开"或"允许"来允许 seekdb 运行
 
 ### 内存不足
 
-SeekDB 最低需要 2GB 内存。检查系统内存:
+seekdb 最低需要 2GB 内存。检查系统内存:
 ```bash
 sysctl hw.memsize
 ```
@@ -204,7 +204,7 @@ seekdb --nodaemon
 # 停止服务
 seekdb-stop
 
-# 卸载 SeekDB
+# 卸载 seekdb
 brew uninstall seekdb
 
 # 删除数据目录（可选，会删除所有数据）
@@ -213,11 +213,11 @@ rm -rf /opt/homebrew/var/seekdb
 
 ## 版本信息
 
-- 当前版本: 1.0.0
+- 当前版本: 1.3.0.0
 - Homepage: https://github.com/oceanbase/seekdb
 - License: Apache-2.0
 
 ## 相关链接
 
-- [OceanBase SeekDB](https://github.com/oceanbase/seekdb)
+- [OceanBase seekdb](https://github.com/oceanbase/seekdb)
 - [Homebrew Formula Cookbook](https://docs.brew.sh/Formula-Cookbook)
