@@ -18,6 +18,23 @@ class Seekdb < Formula
     bin.install "usr/bin/seekdb"
     bin.install "usr/bin/obshell"
 
+    # seekdb is linked against an absolute path /opt/homebrew/opt/thrift/lib/libthrift-0.22.0.dylib.
+    # If the currently installed thrift no longer ships that exact file (e.g. 0.23.0
+    # only provides libthrift-0.23.0.dylib), stage a symlink with the old name
+    # inside our own keg so dyld's DYLD_FALLBACK_LIBRARY_PATH lookup can find it.
+    # The wrapper start script wires up DYLD_FALLBACK_LIBRARY_PATH at runtime.
+    # We do NOT rewrite the binary itself, so its Apple code signature stays intact.
+    # Remove once seekdb is rebuilt against current thrift.
+    thrift_lib = Formula["thrift"].opt_lib
+    expected_dylib = "libthrift-0.22.0.dylib"
+    unless (thrift_lib/expected_dylib).exist?
+      current_dylib = Dir["#{thrift_lib}/libthrift-*.dylib"].first
+      if current_dylib
+        (libexec/"compat").mkpath
+        ln_sf current_dylib, libexec/"compat"/expected_dylib
+      end
+    end
+
     # Install config files from etc/seekdb/
     (etc/"seekdb").install Dir["etc/seekdb/*"]
 
@@ -63,6 +80,10 @@ class Seekdb < Formula
       SEEKDB_PID_FILE="#{var}/seekdb/data/run/seekdb.pid"
       SEEKDB_LOG_FILE="#{var}/seekdb/data/log/seekdb.log"
       DAEMON_PID_FILE="#{var}/seekdb/data/run/daemon.pid"
+
+      # Let dyld fall back to bundled shims (e.g. libthrift-0.22.0.dylib pointing
+      # at the current thrift) when the hardcoded version is gone from /opt/homebrew.
+      export DYLD_FALLBACK_LIBRARY_PATH="#{libexec}/compat:${DYLD_FALLBACK_LIBRARY_PATH:-/usr/local/lib:/lib:/usr/lib}"
 
       # check if already running
       if [[ -f "$SEEKDB_PID_FILE" ]] && kill -0 "$(cat "$SEEKDB_PID_FILE")" 2>/dev/null; then
@@ -241,9 +262,6 @@ class Seekdb < Formula
         seekdb-stop    # Stop seekdb daemon
         seekdb-status  # Check seekdb status
         seekdb-cleanup # Remove config and data directories
-      Direct usage:
-        seekdb --nodaemon                    # Foreground mode (first startup is faster)
-        seekdb --base-dir=/custom/path       # Custom data directory
       Files and directories:
         Config: #{etc}/seekdb
         Data:   #{var}/seekdb/data
