@@ -1,9 +1,9 @@
 class Seekdb < Formula
   desc "AI-Native Search Database - OceanBase seekdb"
   homepage "https://github.com/oceanbase/seekdb"
-  url "https://mirrors.aliyun.com/oceanbase/community/stable/darwin/15/arm64/seekdb-1.3.0.0-100000092026051510-macos15-arm64.tar.gz"
-  version "1.3.0.0"
-  sha256 "65105646eface8e13e04ef83e61f6111b52d90ba473d03bd67f9c4ef06b81087"
+  url "https://mirrors.oceanbase.com/oceanbase/community/stable/darwin/15/arm64/seekdb-1.4.0.0-100000172026082615-macos15-arm64.tar.gz"
+  version "1.4.0.0"
+  sha256 "7ecb744e57f1453c369e37c4411f0e46baeeb0358b23aa263c3f5f5172daef81"
   license "Apache-2.0"
   depends_on arch: :arm64
   depends_on "brotli"

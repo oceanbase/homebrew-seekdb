@@ -214,7 +214,7 @@ rm -rf /opt/homebrew/var/seekdb
 
 ## Version Information
 
-- Current version: 1.3.0.0
+- Current version: 1.4.0.0
 - Homepage: https://github.com/oceanbase/seekdb
 - License: Apache-2.0
 

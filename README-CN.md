@@ -213,7 +213,7 @@ rm -rf /opt/homebrew/var/seekdb
 
 ## 版本信息
 
-- 当前版本: 1.3.0.0
+- 当前版本: 1.4.0.0
 - Homepage: https://github.com/oceanbase/seekdb
 - License: Apache-2.0
 
