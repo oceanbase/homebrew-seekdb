@@ -16,7 +16,6 @@ class Seekdb < Formula
   def install
     # Install binaries from usr/bin/
     bin.install "usr/bin/seekdb"
-    bin.install "usr/bin/obshell"
 
     # seekdb is linked against an absolute path /opt/homebrew/opt/thrift/lib/libthrift-0.22.0.dylib.
     # If the currently installed thrift no longer ships that exact file (e.g. 0.23.0
@@ -64,7 +63,6 @@ class Seekdb < Formula
 
   def post_install
     chmod 0755, bin/"seekdb"
-    chmod 0755, bin/"obshell"
 
     (var/"seekdb/run").mkpath
     (var/"seekdb/data").mkpath
@@ -75,11 +73,9 @@ class Seekdb < Formula
       #!/bin/bash
 
       SEEKDB_BIN="#{bin}/seekdb"
-      OBSHELL_BIN="#{bin}/obshell"
       SEEKDB_DATA_DIR="#{var}/seekdb/data"
       SEEKDB_PID_FILE="#{var}/seekdb/data/run/seekdb.pid"
       SEEKDB_LOG_FILE="#{var}/seekdb/data/log/seekdb.log"
-      DAEMON_PID_FILE="#{var}/seekdb/data/run/daemon.pid"
 
       # Let dyld fall back to bundled shims (e.g. libthrift-0.22.0.dylib pointing
       # at the current thrift) when the hardcoded version is gone from /opt/homebrew.
@@ -115,19 +111,6 @@ class Seekdb < Formula
           if [[ -n "$SEEKDB_PID" ]] && kill -0 "$SEEKDB_PID" 2>/dev/null; then
             echo "seekdb started successfully (PID: $SEEKDB_PID) in ${WAITED}s"
             echo -e "\\033[32mYou can connect via: mysql -h127.0.0.1 -uroot -P2881 -Doceanbase -A\\033[0m"
-            sleep 2
-
-            # Start obshell agent
-            echo "Starting obshell agent..."
-            rm -f "$DAEMON_PID_FILE"
-            if "$OBSHELL_BIN" agent start --base-dir="$SEEKDB_DATA_DIR"; then
-              echo "obshell agent started successfully"
-              echo -e "\\033[32mYou can access the web interface at http://127.0.0.1:2886/\\033[0m"
-              echo -e "\\033[33mNote: Initial root password is empty.\\033[0m"
-            else
-              echo "Failed to start obshell agent"
-            fi
-
             exit 0
           fi
         fi
@@ -146,29 +129,6 @@ class Seekdb < Formula
       #!/bin/bash
 
       SEEKDB_PID_FILE="#{var}/seekdb/data/run/seekdb.pid"
-      OBSHELL_PID_FILE="#{var}/seekdb/data/run/obshell.pid"
-      DAEMON_PID_FILE="#{var}/seekdb/data/run/daemon.pid"
-
-      # Stop obshell processes first (daemon first, then obshell)
-      if [[ -f "$DAEMON_PID_FILE" ]]; then
-        DAEMON_PID=$(cat "$DAEMON_PID_FILE")
-        if kill -0 "$DAEMON_PID" 2>/dev/null; then
-          echo "Stopping obshell daemon (PID: $DAEMON_PID)..."
-          kill -9 "$DAEMON_PID" 2>/dev/null
-          rm -f "$DAEMON_PID_FILE"
-          echo "obshell daemon stopped"
-        fi
-      fi
-
-      if [[ -f "$OBSHELL_PID_FILE" ]]; then
-        OBSHELL_PID=$(cat "$OBSHELL_PID_FILE")
-        if kill -0 "$OBSHELL_PID" 2>/dev/null; then
-          echo "Stopping obshell (PID: $OBSHELL_PID)..."
-          kill -9 "$OBSHELL_PID" 2>/dev/null
-          rm -f "$OBSHELL_PID_FILE"
-          echo "obshell stopped"
-        fi
-      fi
 
       if [[ ! -f "$SEEKDB_PID_FILE" ]]; then
         echo "seekdb is not running (no PID file found)"
