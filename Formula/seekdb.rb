@@ -98,7 +98,7 @@ class Seekdb < Formula
       echo "Log file: $SEEKDB_LOG_FILE"
 
       # start seekdb
-      "$SEEKDB_BIN" --base-dir="$SEEKDB_DATA_DIR" --parameter cpu_count=4 --parameter memory_limit=2G > "$SEEKDB_LOG_FILE" 2>&1 &
+      "$SEEKDB_BIN" --nodaemon --base-dir="$SEEKDB_DATA_DIR" --parameter cpu_count=4 --parameter memory_limit=2G > "$SEEKDB_LOG_FILE" 2>&1 &
 
       # Loop to check startup status, wait up to 60 seconds
       MAX_WAIT=60
